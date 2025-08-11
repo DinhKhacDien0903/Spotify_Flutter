@@ -7,6 +7,7 @@ import 'package:spotify_app/core/configs/assets/app_images.dart';
 import 'package:spotify_app/core/configs/assets/app_vectors.dart';
 import 'package:spotify_app/core/configs/theme/app_colors.dart';
 import 'package:spotify_app/core/configs/theme/app_fontSize.dart';
+import 'package:spotify_app/presentation/auth/pages/signin.dart';
 import 'package:spotify_app/presentation/auth/pages/signup.dart';
 
 class AuthSelectionPage extends StatelessWidget {
@@ -80,7 +81,7 @@ class AuthSelectionPage extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: TextButton(
-                            onPressed: () => navigateToChooseMode(SignUpPage()),
+                            onPressed: () => navigateToChooseMode(SignInPage()),
                             child: Text(
                               'Sign in',
                               style: TextStyle(

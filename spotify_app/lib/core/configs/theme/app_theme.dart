@@ -12,6 +12,10 @@ class AppTheme {
       filled: true,
       fillColor: Colors.transparent,
       contentPadding: EdgeInsets.all(30),
+      hintStyle: TextStyle(
+        color: Color(0xff383838),
+        fontWeight: FontWeight.w500,
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide(color: Colors.black, width: 0.4),
@@ -43,6 +47,10 @@ class AppTheme {
       filled: true,
       fillColor: Colors.transparent,
       contentPadding: EdgeInsets.all(30),
+      hintStyle: TextStyle(
+        color: Color(0xffA7A7A7),
+        fontWeight: FontWeight.w500,
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide(color: Colors.white, width: 0.4),
