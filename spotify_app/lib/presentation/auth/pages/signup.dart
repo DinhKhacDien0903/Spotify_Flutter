@@ -6,15 +6,31 @@ import 'package:spotify_app/common/widgets/button/basic_app_button.dart';
 import 'package:spotify_app/core/configs/assets/app_vectors.dart';
 import 'package:spotify_app/core/configs/theme/app_colors.dart';
 import 'package:spotify_app/core/configs/theme/app_fontSize.dart';
+import 'package:spotify_app/data/models/create_user_request.dart';
+import 'package:spotify_app/domain/usecases/auth/signup.dart';
 import 'package:spotify_app/presentation/auth/pages/signin.dart';
+import 'package:spotify_app/service_locator.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({super.key});
+  SignUpPage({super.key});
 
+  final TextEditingController _fullName = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
   void navigateToChooseMode(BuildContext context, Widget targetPage) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (BuildContext context) => targetPage),
+    );
+  }
+
+  Future<void> signup() async {
+    await sl<SignUpUseCase>().call(
+      params: CreateUserRequest(
+        fullName: _fullName.text.toString(),
+        email: _email.text.toString(),
+        password: _password.text.toString(),
+      ),
     );
   }
 
@@ -39,8 +55,8 @@ class SignUpPage extends StatelessWidget {
             _passwordField(context),
             SizedBox(height: 10),
             BasicAppButton(
-              onPressed: () {
-                // Handle sign-up logic
+              onPressed: () async {
+                var result = await signup();
               },
               textContent: 'Create Account',
             ),
@@ -73,18 +89,21 @@ class SignUpPage extends StatelessWidget {
   );
 
   Widget _fullNameField(BuildContext context) => TextField(
+    controller: _fullName,
     decoration: InputDecoration(
       hintText: 'Full Name',
     ).applyDefaults(Theme.of(context).inputDecorationTheme),
   );
 
   Widget _emailField(BuildContext context) => TextField(
+    controller: _email,
     decoration: InputDecoration(
       hintText: 'Enter Email',
     ).applyDefaults(Theme.of(context).inputDecorationTheme),
   );
 
   Widget _passwordField(BuildContext context) => TextField(
+    controller: _password,
     decoration: InputDecoration(
       hintText: 'Enter Password',
     ).applyDefaults(Theme.of(context).inputDecorationTheme),
