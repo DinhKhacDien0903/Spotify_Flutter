@@ -10,5 +10,5 @@ final sl = GetIt.instance;
 Future<void> initializeDependencies() async {
   sl.registerSingleton<AuthFirebaseService>(AuthFirebaseServiceImpl());
   sl.registerSingleton<AuthRepository>(AuthRepositoryImpl());
-  sl.registerSingleton<UseCase>(SignUpUseCase());
+  sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
 }

@@ -9,6 +9,7 @@ import 'package:spotify_app/core/configs/theme/app_fontSize.dart';
 import 'package:spotify_app/data/models/create_user_request.dart';
 import 'package:spotify_app/domain/usecases/auth/signup.dart';
 import 'package:spotify_app/presentation/auth/pages/signin.dart';
+import 'package:spotify_app/presentation/root/pages/root.dart';
 import 'package:spotify_app/service_locator.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -24,13 +25,23 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Future<void> signup() async {
-    await sl<SignUpUseCase>().call(
+  Future<void> signup(BuildContext context) async {
+    var result = await sl<SignUpUseCase>().call(
       params: CreateUserRequest(
         fullName: _fullName.text.toString(),
         email: _email.text.toString(),
         password: _password.text.toString(),
       ),
+    );
+
+    result.fold(
+      (l) {
+        var snackBar = SnackBar(content: Text(l));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+      (r) {
+        navigateToChooseMode(context, const RootPage());
+      },
     );
   }
 
@@ -56,7 +67,7 @@ class SignUpPage extends StatelessWidget {
             SizedBox(height: 10),
             BasicAppButton(
               onPressed: () async {
-                var result = await signup();
+                await signup(context);
               },
               textContent: 'Create Account',
             ),
