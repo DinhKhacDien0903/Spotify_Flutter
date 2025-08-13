@@ -6,10 +6,17 @@ import 'package:spotify_app/common/widgets/button/basic_app_button.dart';
 import 'package:spotify_app/core/configs/assets/app_vectors.dart';
 import 'package:spotify_app/core/configs/theme/app_colors.dart';
 import 'package:spotify_app/core/configs/theme/app_fontsize.dart';
+import 'package:spotify_app/data/models/signin_user_request.dart';
+import 'package:spotify_app/domain/usecases/auth/signin.dart';
 import 'package:spotify_app/presentation/auth/pages/signup.dart';
+import 'package:spotify_app/presentation/home/pages/home.dart';
+import 'package:spotify_app/service_locator.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+  SignInPage({super.key});
+
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   void navigateToChooseMode(BuildContext context, Widget targetPage) {
     Navigator.push(
@@ -18,14 +25,38 @@ class SignInPage extends StatelessWidget {
     );
   }
 
+  Future<void> signin(BuildContext context) async {
+    var result = await sl<SigninUsecase>().call(
+      params: SigninUserRequest(
+        email: _email.text.toString(),
+        password: _password.text.toString(),
+      ),
+    );
+
+    result.fold(
+      (l) {
+        var snackBar = SnackBar(
+          content: Text(l),
+          behavior: SnackBarBehavior.floating,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+      (r) {
+        navigateToChooseMode(context, const HomePage());
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: _signupText(context),
       appBar: BasicAppBar(
+        leadingIcon: Icons.arrow_back_ios_new,
+        onLeadingPressed: () => Navigator.pop(context),
         title: SvgPicture.asset(AppVectors.logo, width: 40, height: 40),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
         child: Column(
           spacing: 20,
@@ -38,9 +69,7 @@ class SignInPage extends StatelessWidget {
             _passwordField(context),
             SizedBox(height: 10),
             BasicAppButton(
-              onPressed: () {
-                // Handle sign-up logic
-              },
+              onPressed: () => signin(context),
               textContent: 'Sign In',
             ),
           ],
@@ -72,12 +101,14 @@ class SignInPage extends StatelessWidget {
   );
 
   Widget _userNameOrEmailField(BuildContext context) => TextField(
+    controller: _email,
     decoration: InputDecoration(
       hintText: 'Enter Username or Email',
     ).applyDefaults(Theme.of(context).inputDecorationTheme),
   );
 
   Widget _passwordField(BuildContext context) => TextField(
+    controller: _password,
     decoration: InputDecoration(
       hintText: 'Password',
     ).applyDefaults(Theme.of(context).inputDecorationTheme),

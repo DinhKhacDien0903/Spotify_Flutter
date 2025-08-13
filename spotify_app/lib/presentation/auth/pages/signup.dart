@@ -9,7 +9,7 @@ import 'package:spotify_app/core/configs/theme/app_fontSize.dart';
 import 'package:spotify_app/data/models/create_user_request.dart';
 import 'package:spotify_app/domain/usecases/auth/signup.dart';
 import 'package:spotify_app/presentation/auth/pages/signin.dart';
-import 'package:spotify_app/presentation/root/pages/root.dart';
+import 'package:spotify_app/presentation/home/pages/home.dart';
 import 'package:spotify_app/service_locator.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -36,11 +36,14 @@ class SignUpPage extends StatelessWidget {
 
     result.fold(
       (l) {
-        var snackBar = SnackBar(content: Text(l));
+        var snackBar = SnackBar(
+          content: Text(l),
+          behavior: SnackBarBehavior.floating,
+        );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       },
       (r) {
-        navigateToChooseMode(context, const RootPage());
+        navigateToChooseMode(context, const HomePage());
       },
     );
   }
@@ -50,9 +53,11 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: _signinText(context),
       appBar: BasicAppBar(
+        leadingIcon: Icons.arrow_back_ios_new,
+        onLeadingPressed: () => Navigator.pop(context),
         title: SvgPicture.asset(AppVectors.logo, width: 40, height: 40),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
         child: Column(
           spacing: 20,
