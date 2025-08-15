@@ -6,7 +6,7 @@ import 'package:spotify_app/common/widgets/button/basic_app_button.dart';
 import 'package:spotify_app/core/configs/assets/app_vectors.dart';
 import 'package:spotify_app/core/configs/theme/app_colors.dart';
 import 'package:spotify_app/core/configs/theme/app_fontSize.dart';
-import 'package:spotify_app/data/models/create_user_request.dart';
+import 'package:spotify_app/data/models/auth/create_user_request.dart';
 import 'package:spotify_app/domain/usecases/auth/signup.dart';
 import 'package:spotify_app/presentation/auth/pages/signin.dart';
 import 'package:spotify_app/presentation/home/pages/home.dart';
